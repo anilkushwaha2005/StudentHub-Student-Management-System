@@ -1,0 +1,23 @@
+StudentHub Custom Form Builder - File Upload Enhancement
+
+Features added:
+- Admin field types: short text, long answer, email, number, date, dropdown, file upload.
+- File field settings: allowed extensions, maximum size (1-10 MB), single or multiple files, required toggle.
+- Student form submissions upload files through authenticated Spring Boot API.
+- Supported file types: PDF, DOC/DOCX, PPT/PPTX, XLS/XLSX, JPG/JPEG, PNG, TXT, ZIP.
+- Files are stored outside the project in the current Windows user's home folder: .studenthub-uploads
+- Admin submission review shows authenticated download buttons for attached files.
+- Existing student/form/submission tables are preserved; no database reset is required.
+
+After replacing your project files:
+1. Stop backend and frontend (Ctrl+C in each terminal).
+2. Start backend with the usual Maven command. Keep DB_PASSWORD and JWT_SECRET configured.
+3. Start frontend with npm.cmd run dev.
+4. Sign in as Admin, open Custom Forms, add a field, choose "File upload", configure extension list/size/multiple, and create the form.
+5. Sign in as a Student and submit the form with an attachment.
+6. In Admin > Submissions, download the attached file.
+
+Security/limits:
+- Each file is limited to 10 MB and server validates the extension.
+- Downloads require an authenticated session.
+- Files persist on the machine hosting Spring Boot. For deployment to another computer/server, move the upload directory with the application data.

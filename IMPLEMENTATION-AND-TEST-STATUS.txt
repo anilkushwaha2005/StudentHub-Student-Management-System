@@ -1,0 +1,23 @@
+StudentHub enhancement notes
+
+Changes included in this package:
+- Login screen now starts with Student Login / Admin Login role selection and a Create Student Account option. Authentication response role is checked before entering the selected portal.
+- Student self-registration remains student-only; public admin registration is not added.
+- Admin display name defaults to Anil without changing the admin login email.
+- Student profile labels use bold emphasis.
+- Form deletion is now soft archival (active=false), preserving the form record.
+- New submissions store a formTitle snapshot so the title can remain visible in submission history after archival.
+- Added an admin-only endpoint to update submission status: PUT /api/forms/submissions/{submissionId}/status with {"status":"REVIEWED"}; supported statuses: SUBMITTED, PENDING, REVIEWED, APPROVED, REJECTED.
+- Added .env.example placeholders. Existing MySQL data is not reset or dropped by these code changes.
+
+Important verification limitations:
+- This package was not tested against your local MySQL database or live accounts in this environment.
+- Existing submissions from before this update may have a null formTitle snapshot; their title can still be shown while the archived custom_forms record remains in the database.
+- The current app's student directory is still backed by the existing /api/students repository API and profile save sync; please verify registered-account/student-directory matching with your actual pre-existing data.
+- End-to-end workflows, authorization against your local environment, and database migration behavior must be tested locally before production use.
+
+Registration/directory follow-up:
+- AuthService now saves the Student directory row first, then saves the User account with the generated studentId, in one transaction.
+- Roll-number duplicate validation checks both the users and student tables.
+- Existing NULL profile fields in old users rows are not guessed or overwritten.
+- Full build and local MySQL end-to-end verification remain unperformed in this environment.

@@ -25,3 +25,13 @@ IMPORTANT
 - If port 8080 is already in use, do not start another backend instance. Test the existing one first.
 - The backend uses Spring Data REST, so the API collection is /students.
 - Student roll number and email are configured as unique values.
+
+
+## Latest enhancement package notes
+See IMPLEMENTATION-AND-TEST-STATUS.txt for included code changes and verification limitations.
+
+### Windows PowerShell startup
+Terminal 1 (backend): open the studentmanagement folder, set DB_PASSWORD and JWT_SECRET in this same PowerShell session, then run .\mvnw.cmd spring-boot:run.
+Terminal 2 (frontend): open studentmanagement-react-frontend, run npm.cmd install, then npm.cmd run dev. Open http://localhost:5173.
+
+Do not drop or reset student_db. The configured Hibernate setting should remain ddl-auto=update. Configure secrets locally and never commit them.

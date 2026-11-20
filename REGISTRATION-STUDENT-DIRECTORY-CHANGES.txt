@@ -1,0 +1,27 @@
+StudentHub registration/student directory changes
+===================================================
+
+- Student registration now requires Full Name, Roll Number, Course, Email, and Password.
+- Backend validates required values, email format, minimum password length, and duplicate email/roll number.
+- Passwords continue to be stored using the existing BCrypt password encoder.
+- Successful registration creates both a STUDENT user account and a student directory record in the existing MySQL database.
+- Student records remain available through the existing protected /api/students endpoint, including admin CRUD operations.
+- Existing database is not dropped or reset; JPA schema setting remains update.
+
+Important:
+- Run against a backup of your existing database first.
+- The archive was source-inspected and patched, but full end-to-end testing against your local MySQL instance was not possible here.
+- Existing student rows are not migrated or deleted by this change.
+
+Additional correction in this build:
+- Student directory record is saved first and its generated ID is stored on the new User.student_id field.
+- Duplicate roll-number validation checks both users and student records.
+- Registration remains transactional; if either save fails, both operations roll back.
+- This does not automatically reconstruct profile details for old user rows whose profile columns are NULL. Those details must be recovered from the original registration data or updated by an authorized admin.
+
+
+PERMANENT STUDENT ACCOUNT DELETION
+- Admin deletion of a Student Directory record now removes the linked STUDENT login from the users table by studentId, with an email fallback for older accounts.
+- The deleted account can no longer sign in; the JWT filter checks that the user still exists and is ACTIVE on protected requests.
+- Historical form submissions are retained and are not automatically deleted.
+- This relies on Spring Data REST delete events for DELETE /api/students/{id}. Verify with a test account in the local environment.

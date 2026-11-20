@@ -1,0 +1,42 @@
+StudentHub upgrade notes
+========================
+
+Included in this first implementation:
+- Student self-registration using existing /api/auth/register endpoint.
+- Role-aware login: ADMIN sees the existing admin dashboard; STUDENT sees a student dashboard.
+- Student profile fields (full name, roll number, course, phone, address) stored in the existing users table.
+- Admin custom form builder with text/number/date fields, required flags, and access targeting:
+  ALL students, comma-separated course names, or comma-separated student emails.
+- Student form submission and personal submission list.
+- Additive JPA schema changes only; spring.jpa.hibernate.ddl-auto=update remains enabled.
+
+IMPORTANT:
+1. Back up the MySQL database before running the updated backend.
+2. Existing Student table records are not intentionally deleted or overwritten.
+3. This implementation does NOT yet include email-based forgot-password reset, SMTP delivery, or admin approval/review UI. Do not treat a "forgot password" screen as available yet; a secure reset flow requires an email provider and expiring one-time tokens.
+4. Existing administrator login should continue to use the same account and password.
+5. Self-registered student accounts are set ACTIVE so they can sign in immediately. Use strong passwords.
+6. Do not publish application.properties secrets or environment variables.
+7. Test locally before using real student personal information.
+
+Backend:
+  cd studentmanagement
+  .\mvnw.cmd spring-boot:run
+
+Frontend (new PowerShell window):
+  cd studentmanagement-react-frontend
+  npm install
+  npm run dev
+
+Frontend: http://localhost:5173
+Backend:  http://localhost:8080
+
+API additions:
+  GET/PUT  /api/student/profile
+  GET/POST /api/forms
+  PUT/DELETE /api/forms/{id}       (admin only)
+  POST     /api/forms/{id}/submissions
+  GET      /api/forms/my-submissions
+  GET      /api/forms/{id}/submissions (admin only)
+
+Course-targeted forms compare the student's profile course string to the comma-separated course names. Fill in the student's Course field to receive course-targeted forms.

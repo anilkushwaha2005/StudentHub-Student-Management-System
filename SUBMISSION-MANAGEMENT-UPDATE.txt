@@ -1,0 +1,15 @@
+StudentHub update - submission management
+
+Implemented in this update:
+- Admin submissions page has a live client-side search across student name, roll number, course, email, form title, status, and text answers.
+- Submission cards are collapsed initially and expand to show answers and authenticated attachment download controls.
+- Clear search resets only the search query; it never deletes records.
+- Each submission has an explicit permanent-delete action with confirmation.
+- Custom Form Builder has a Clear form inputs button for unsaved builder values, separate from deleting saved forms.
+- Delete Form now permanently removes the selected form and its associated submissions in a backend transaction, after a frontend confirmation that explains the consequence.
+- Added the missing UserRepository.existsByRollNumberIgnoreCase method which was causing the backend compile error shown in the terminal.
+
+Important:
+- Existing unrelated student records are not deleted or reset.
+- Deleting a form permanently deletes its associated form_submissions records. Confirm carefully.
+- Build/end-to-end tests could not be completed in this environment. Please run Maven and npm build locally and report any errors.

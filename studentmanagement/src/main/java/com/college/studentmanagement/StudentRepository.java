@@ -5,4 +5,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "students", path = "students")
 public interface StudentRepository extends JpaRepository<Student, Long> {
+    boolean existsByRollNumberIgnoreCase(String rollNumber);
+    boolean existsByEmailIgnoreCase(String email);
 }
